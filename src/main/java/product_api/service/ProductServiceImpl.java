@@ -1,3 +1,4 @@
+
 package product_api.service;
 
 import product_api.dto.request.CreateProductRequest;
@@ -7,21 +8,22 @@ import product_api.model.Product;
 import product_api.repository.ProductRepository;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Service
+@Transactional
 public class ProductServiceImpl implements ProductService {
+
     private final ProductRepository productRepository;
-    private final AtomicLong idGenerator = new AtomicLong(0);
 
     public ProductServiceImpl(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ProductResponse> findAll() {
         return productRepository.findAll()
                 .stream()
@@ -30,6 +32,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ProductResponse findById(Long id) {
         return productRepository.findById(id)
                 .map(this::toResponse)
@@ -38,15 +41,15 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductResponse create(CreateProductRequest request) {
-        Long id = idGenerator.incrementAndGet();
 
         Product product = new Product(
-                id,
                 request.name(),
                 request.price()
         );
 
-        return toResponse(productRepository.save(product));
+        Product savedProduct = productRepository.save(product);
+
+        return toResponse(savedProduct);
     }
 
     @Override
@@ -60,12 +63,21 @@ public class ProductServiceImpl implements ProductService {
         product.setName(request.name());
         product.setPrice(request.price());
 
-        return toResponse(productRepository.save(product));
+        Product updatedProduct = productRepository.save(product);
+
+        return toResponse(updatedProduct);
     }
 
     @Override
     public boolean delete(Long id) {
-        return productRepository.deleteById(id);
+
+        if (!productRepository.existsById(id)) {
+            return false;
+        }
+
+        productRepository.deleteById(id);
+
+        return true;
     }
 
     private ProductResponse toResponse(Product product) {
