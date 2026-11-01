@@ -1,0 +1,108 @@
+HELP.md
+target/
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+
+
+# ==========================================
+# Java / Maven
+# ==========================================
+*.class
+*.jar
+*.war
+*.ear
+hs_err_pid*
+replay_pid*
+
+# Maven Wrapper: conservar los scripts y configuración
+# (NO ignorar .mvn/ ni mvnw)
+
+# ==========================================
+# IntelliJ IDEA
+# ==========================================
+
+.idea/
+out/
+
+# ==========================================
+# VS Code
+# ==========================================
+
+# ==========================================
+# macOS
+# ==========================================
+
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# ==========================================
+# Logs
+# ==========================================
+
+*.log
+logs/
+
+# ==========================================
+# Environment variables / Secrets
+# ==========================================
+
+.env
+.env.*
+!.env.example
+
+# ==========================================
+# Temporary files
+# ==========================================
+
+*.tmp
+*.swp
+*.swo
+*~
+
+# ==========================================
+# Local databases / Backups
+# ==========================================
+
+*.sqlite
+*.sqlite3
+*.db
+*.dump
+*.backup
+
+# ==========================================
+# Docker
+# ==========================================
+
+# No ignorar Dockerfile, compose.yaml ni archivos de configuración
+
