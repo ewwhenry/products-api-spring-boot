@@ -16,12 +16,15 @@ public class HelloController {
     }
 
     @GetMapping("/")
-    public ApiResponse hello() {
-        return new ApiResponse(
+    public ApiResponse<Void> hello() {
+        return new ApiResponse<>(
+                null,
                 "Hello from Spring Boot!",
                 "success"
         );
     }
+
+
 
     @GetMapping("/api/info")
     public ApplicationInfoResponse getApplicationInfo() {

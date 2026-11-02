@@ -10,6 +10,7 @@ import product_api.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -63,21 +64,39 @@ public class ProductServiceImpl implements ProductService {
         product.setName(request.name());
         product.setPrice(request.price());
 
-        Product updatedProduct = productRepository.save(product);
-
-        return toResponse(updatedProduct);
+        return toResponse(product);
     }
 
     @Override
-    public boolean delete(Long id) {
+    public void delete(Long id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException(id));
 
-        if (!productRepository.existsById(id)) {
-            return false;
-        }
+        productRepository.delete(product);
+    }
 
-        productRepository.deleteById(id);
+    @Override
+    public List<ProductResponse> findByName(String name) {
+        return productRepository
+                .findByNameContainingIgnoreCase(name)
+                .stream()
+                .map(this::toResponse)
+                .toList();
+    }
 
-        return true;
+    @Override
+    public List<ProductResponse> findByPriceBetween(BigDecimal min, BigDecimal max) {
+         return productRepository
+                 .findByPriceBetween(min, max)
+                 .stream()
+                 .map(this::toResponse)
+                 .toList();
+    }
+
+    @Override
+    public boolean existsByName(String name) {
+        return productRepository
+                .existsByName(name);
     }
 
     private ProductResponse toResponse(Product product) {
