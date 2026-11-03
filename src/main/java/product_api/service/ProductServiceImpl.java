@@ -86,11 +86,35 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductResponse> findByPriceBetween(BigDecimal min, BigDecimal max) {
-         return productRepository
-                 .findByPriceBetween(min, max)
-                 .stream()
-                 .map(this::toResponse)
-                 .toList();
+        return productRepository
+                .findByPriceBetween(min, max)
+                .stream()
+                .map(this::toResponse)
+                .toList();
+    }
+
+    @Override
+    public List<ProductResponse> searchByName(String name) {
+        return productRepository.findByName(name)
+                .stream()
+                .map(this::toResponse)
+                .toList();
+    }
+
+    @Override
+    public List<ProductResponse> findByPriceRange(BigDecimal min, BigDecimal max) {
+        return productRepository.findByPriceRange(min, max)
+                .stream()
+                .map(this::toResponse)
+                .toList();
+    }
+
+    @Override
+    public List<ProductResponse> findAboveAveragePrice() {
+        return productRepository.findAboveAveragePrice()
+                .stream()
+                .map(this::toResponse)
+                .toList();
     }
 
     @Override

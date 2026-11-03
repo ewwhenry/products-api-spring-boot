@@ -19,7 +19,7 @@ import java.util.List;
 public class ProductController {
     private final ProductService productService;
 
-    public ProductController (ProductService productService) {
+    public ProductController(ProductService productService) {
         this.productService = productService;
     }
 
@@ -73,10 +73,42 @@ public class ProductController {
     }
 
     @GetMapping("/exists")
-    public ResponseEntity<ApiResponse<Boolean>> exists (@RequestParam String name) {
+    public ResponseEntity<ApiResponse<Boolean>> exists(@RequestParam String name) {
         return ResponseEntity.ok(new ApiResponse<>(
                 productService.existsByName(name),
                 "Product existence checked",
+                "success"
+        ));
+    }
+
+    @GetMapping("/search-jpql")
+    public ResponseEntity<ApiResponse<List<ProductResponse>>> searchByName(
+            @RequestParam String name
+    ) {
+        return ResponseEntity.ok(new ApiResponse<>(
+                productService.searchByName(name),
+                "Products searched successfully",
+                "success"
+        ));
+    }
+
+    @GetMapping("/price-range-jpql")
+    public ResponseEntity<ApiResponse<List<ProductResponse>>> findByPriceRange(
+            @RequestParam BigDecimal min,
+            @RequestParam BigDecimal max
+    ) {
+        return ResponseEntity.ok(new ApiResponse<>(
+                productService.findByPriceRange(min, max),
+                "Products filtered successfully",
+                "success"
+        ));
+    }
+
+    @GetMapping("/above-average-price")
+    public ResponseEntity<ApiResponse<List<ProductResponse>>> findAboveAveragePrice() {
+        return ResponseEntity.ok(new ApiResponse<>(
+                productService.findAboveAveragePrice(),
+                "Above-average products retrieved successfully",
                 "success"
         ));
     }
